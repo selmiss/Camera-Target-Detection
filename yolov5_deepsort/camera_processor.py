@@ -18,7 +18,7 @@ class CameraProcessor:
         self.origin_fps = int(self.vid_cap.get(cv2.CAP_PROP_FPS))
         print(self.url, self.origin_fps)
         # Object detection area
-        self.volume_area = [0, 0, self.width, self.height]
+        self.volume_area = [0, self.height // 2.5, self.width, self.height]
         print(f'width: {self.width} height: {self.height} fps: {self.origin_fps}')
 
         # Detection status
@@ -48,11 +48,11 @@ class CameraProcessor:
             # Gets the number of detection boxes per frame
             car_num = self.count_volume(obj_bboxes)
             volume_info.append(volume_info[frame_idx - 1] + car_num)
-            print(frame_idx, car_num)
+            print("Now the num of car is: ", car_num)
             # cv2.rectangle(frame, (0, int(self.height // 2.5)), (self.width, self.height), (0, 255, 0), 1)
             if frame_idx > 2 * self.origin_fps:
                 average_volume = (volume_info[frame_idx] - volume_info[frame_idx - 2*self.origin_fps]) / (self.origin_fps * 2)
-                print(average_volume)
+                # print(average_volume)
 
             # frame = imutils.resize(frame, height=500)
             cv2.imshow("Cars detection", frame)
@@ -116,5 +116,5 @@ class CameraProcessor:
 
 
 if __name__ == '__main__':
-    camera = CameraProcessor('./testdata/test_vedio1.mp4')
+    camera = CameraProcessor('./testdata/test_vedio2.mp4')
     camera.start_process()
